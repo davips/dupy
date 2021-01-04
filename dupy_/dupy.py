@@ -96,6 +96,22 @@ def findDup(parentFolder):
 
 # Joins two dictionaries
 def joinDicts(dict1, dict2):
+    """
+        Usage:
+        >>> a = {'a': 1}
+        >>> joinDicts(a, {'b': 2})
+        >>> a
+        {'a': 1, 'b': 2}
+
+    Parameters
+    ----------
+    dict1
+    dict2
+
+    Returns
+    -------
+
+    """
     for key in dict2.keys():
         if key in dict1:
             dict1[key] = dict1[key] + dict2[key]
@@ -103,7 +119,7 @@ def joinDicts(dict1, dict2):
             dict1[key] = dict2[key]
 
 
-def hashfile(path, blocksize=65536):
+def hashfile(path, blocksize=65536):  # pragma: no cover
     afile = open(path, 'rb')
     hasher = hashlib.md5()
     buf = afile.read(blocksize)
@@ -114,7 +130,7 @@ def hashfile(path, blocksize=65536):
     return hasher.hexdigest()
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':  # pragma: no cover
     if len(sys.argv) > 1:
         dups = {}
         folders = sys.argv[1:]
