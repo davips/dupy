@@ -1,10 +1,10 @@
 import setuptools
 
-import dupy
+# import dupy_
 
 NAME = "dupy"
 
-VERSION = "0.2101.0"
+VERSION = "0.2101.1"
 
 AUTHOR = 'Davi Pereira-Santos'
 
@@ -56,4 +56,4 @@ setuptools.setup(
     scripts=['dupy']
 )
 
-package_dir = {'': 'dupy'}  # For IDEs like Intellij to recognize the package.
+package_dir = {'': 'dupy_'}  # For IDEs like Intellij to recognize the package.

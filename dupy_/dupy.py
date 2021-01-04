@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 """
 Based on https://www.pythoncentral.io/finding-duplicate-files-with-python/
@@ -32,10 +32,12 @@ import hashlib
 import json
 from operator import itemgetter, attrgetter
 
-globaldups={}
-sizes={}
+globaldups = {}
+sizes = {}
 s = 0
 f = 0
+
+
 def findDup(parentFolder):
     global s
     global f
@@ -44,7 +46,7 @@ def findDup(parentFolder):
     print(f"{parentFolder}\t")
     t = 0
     for filename in os.listdir(parentFolder):
-        f+=1
+        f += 1
         path = os.path.join(parentFolder, filename)
         a = 0
         if not os.path.islink(path):
@@ -57,9 +59,9 @@ def findDup(parentFolder):
                         globaldups[file_hash].append(path)
                     else:
                         globaldups[file_hash] = [path]
-                    
+
                     if file_hash in dups:
-                        dups[file_hash].append(path)                   
+                        dups[file_hash].append(path)
                     else:
                         dups[file_hash] = [path]
 
@@ -71,27 +73,27 @@ def findDup(parentFolder):
             elif os.path.isdir(path):
                 dirdups = findDup(path)
                 dir_hash = hashlib.md5("".join(dirdups.keys()).encode()).hexdigest()
-                entries = {"path":path, "content":dirdups}
-                
+                entries = {"path": path, "content": dirdups}
+
                 if dir_hash in globaldups:
                     globaldups[dir_hash].append(path)
                 else:
                     globaldups[dir_hash] = [path]
-                    
+
                 if dir_hash in dups:
-                    dups[dir_hash].append(entries) 
+                    dups[dir_hash].append(entries)
                 else:
                     dups[dir_hash] = [entries]
 
                 if dir_hash not in sizes:
                     sizes[dir_hash] = a
-                
+
         t += a
     s += t
-    print(f"{f} {len(sizes)} {round(s/100000)/10}MB ...\n")
+    print(f"{f} {len(sizes)} {round(s / 100000) / 10}MB ...\n")
     return dups
- 
- 
+
+
 # Joins two dictionaries
 def joinDicts(dict1, dict2):
     for key in dict2.keys():
@@ -99,9 +101,9 @@ def joinDicts(dict1, dict2):
             dict1[key] = dict1[key] + dict2[key]
         else:
             dict1[key] = dict2[key]
- 
- 
-def hashfile(path, blocksize = 65536):
+
+
+def hashfile(path, blocksize=65536):
     afile = open(path, 'rb')
     hasher = hashlib.md5()
     buf = afile.read(blocksize)
@@ -110,8 +112,8 @@ def hashfile(path, blocksize = 65536):
         buf = afile.read(blocksize)
     afile.close()
     return hasher.hexdigest()
- 
- 
+
+
 if __name__ == '__main__':
     if len(sys.argv) > 1:
         dups = {}
@@ -126,9 +128,9 @@ if __name__ == '__main__':
                 sys.exit()
         print()
         print("========================")
-        for k,v in sorted(sizes.items(), key=itemgetter(1)):
+        for k, v in sorted(sizes.items(), key=itemgetter(1)):
             if len(globaldups[k]) > 1:
-                print(k, f"{round(v/100000)/10}MB", end=":")
+                print(k, f"{round(v / 100000) / 10}MB", end=":")
                 print(json.dumps(globaldups[k], indent=2))
     else:
         print('Usage:\n dupy folder')
