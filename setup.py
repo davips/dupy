@@ -30,6 +30,7 @@ CLASSIFIERS = ['Intended Audience :: Science/Research',
                'Programming Language :: Python :: 3.8']
 
 INSTALL_REQUIRES = [
+    "xxhash"
 ]
 
 EXTRAS_REQUIRE = {
