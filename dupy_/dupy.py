@@ -46,14 +46,16 @@ class Content:
 
 
 class Dupy:
-    def __init__(self):
+    def __init__(self, verbose=True):
+        self.verbose = verbose
         self.heap = []
         self.m = {}
 
     def process(self, path, tab=""):
         name = os.path.basename(path)
         if os.path.isdir(path):
-            print(f"{tab}{name} {'{'}", flush=True)
+            if self.verbose:
+                print(f"{tab}{name} {'{'}", flush=True)
             digest, size = 77777777777777777777777777777777777777, 0
             for entry in os.scandir(path):
                 filepath = os.path.join(path, entry)
@@ -61,7 +63,8 @@ class Dupy:
                 digest += subdigest
                 size += subsize
             digest %= 340282366920938463463374607431768211297
-            print(f"{tab}{'}'} ", flush=True, end="")
+            if self.verbose:
+                print(f"{tab}{'}'} ", flush=True, end="")
         else:
             if os.path.islink(path) or os.path.getsize(path) == 0:
                 namedigest = xxhash.xxh3_128_intdigest(name)
@@ -70,9 +73,11 @@ class Dupy:
             else:
                 digest = self._file_hash(path)
                 size = os.path.getsize(path)
-            print(f"{tab + name:<70}", flush=True, end="")
+            if self.verbose:
+                print(f"{tab + name:<70}", flush=True, end="")
 
-        print(f"{digest}\t\t{size}", flush=True)
+        if self.verbose:
+            print(f"{digest}\t\t{size}", flush=True)
         if digest in self.m:
             self.m[digest].add(path)
         else:
@@ -102,7 +107,7 @@ if __name__ == '__main__':  # pragma: no cover
         else:
             folders = sys.argv[1:]
             maxout = 100
-        d = Dupy()
+        d = Dupy(verbose=False)
         for folder in folders:
             if os.path.exists(folder):
                 print(folder, "...")

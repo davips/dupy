@@ -11,6 +11,6 @@ pip install dupy
 
 ### Usage
 ```bash
-dupy folder
-dupy folder1 folder2 folder3 ...
+dupy folder [max=100]
+dupy folder1 folder2 folder3 ... [max=100]
 ```
