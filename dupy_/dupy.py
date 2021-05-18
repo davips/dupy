@@ -99,15 +99,19 @@ class Dupy:
 
 
 if __name__ == '__main__':  # pragma: no cover
-    if len(sys.argv) > 1:
-        print(sys.argv)
-        if sys.argv[-1].startswith("max="):
-            folders = sys.argv[1:-1]
-            maxout = int(sys.argv[-1].split("=")[1])
+    args = sys.argv
+    if len(args) > 1:
+        verbose = False
+        if "-v" in args:
+            args = [arg for arg in args if arg != "-v"]
+            verbose = True
+        if args[-1].startswith("max="):
+            folders = args[1:-1]
+            maxout = int(args[-1].split("=")[1])
         else:
-            folders = sys.argv[1:]
+            folders = args[1:]
             maxout = 100
-        d = Dupy(verbose=False)
+        d = Dupy(verbose=verbose)
         for folder in folders:
             if os.path.exists(folder):
                 print(folder, "...")
@@ -115,12 +119,7 @@ if __name__ == '__main__':  # pragma: no cover
             else:
                 print(f"{folder} is not a valid path, please verify")
                 sys.exit()
-        print()
-        print("===============================================================")
-        print("===============================================================")
-        print()
-        print()
-        print()
+        print("\n===================================================\n\n\n\n\n")
         for cont in reversed(heapq.nsmallest(maxout, d.heap)):
             if len(cont.paths) > 1:
                 print(f"{cont.size / 1_000_000:.2f} MB     ({cont.size / 1_000:.3f} KB):")
@@ -128,5 +127,5 @@ if __name__ == '__main__':  # pragma: no cover
                     print(f"\t{p}")
                 print()
     else:
-        print('Usage:\n dupy folder [max=100]')
-        print('Usage:\n dupy folder1 folder2 folder3 ... [max=100]')
+        print('Usage:\n dupy folder [-v] [max=100]')
+        print('Usage:\n dupy folder1 folder2 folder3 ... [-v] [max=100]')
