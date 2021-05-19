@@ -4,7 +4,7 @@ import setuptools
 
 NAME = "dupy"
 
-VERSION = "1.2105.10"
+VERSION = "1.2105.11"
 
 AUTHOR = 'Davi Pereira-Santos'
 
